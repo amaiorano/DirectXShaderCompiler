@@ -661,6 +661,17 @@ void ASTUnit::ConfigureDiags(IntrusiveRefCntPtr<DiagnosticsEngine> Diags,
   }
 }
 
+
+// @TODO(amaiorano): Upstream this. Clang needs this to be defined when it compiles call sites like in ASTMerge.cpp.
+std::unique_ptr<ASTUnit> ASTUnit::LoadFromASTFile(
+    const std::string &Filename,
+    const PCHContainerReader &PCHContainerRdr,
+    IntrusiveRefCntPtr<DiagnosticsEngine> Diags,
+    const FileSystemOptions &FileSystemOpts, bool OnlyLocalDecls,
+    ArrayRef<RemappedFile> RemappedFiles, bool CaptureDiagnostics,
+    bool AllowPCHWithCompilerErrors, bool UserFilesAreVolatile) {
+      return nullptr;
+    }
 #if 0 // HLSL Change Starts - no support for AST serialization
 
 std::unique_ptr<ASTUnit> ASTUnit::LoadFromASTFile(

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "dxc/Support/WinIncludes.h"
+#include <stdexcept> // @TODO(amaiorano): upstream change to DXC, required for std::bad_alloc() below
 
 namespace dxil_debug_info
 {
