@@ -80,6 +80,30 @@ private:
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+// Unaligned read support
+
+namespace detail {
+    template <typename MemberType>
+    MemberType UnalignedReadMember(std::byte* obj, size_t offset) {
+        MemberType result;
+        memcpy(&result, obj + offset, sizeof(MemberType));
+        return result;
+    }
+}
+
+// Performs a non-UB unaligned read of obj->member
+#define UnalignedReadMember(obj, member) \
+    detail::UnalignedReadMember<decltype(obj->member)>((std::byte*)obj, offsetof(std::decay_t<decltype(*obj)>, member))
+
+// Peforms a non-UB unaligned read of value
+template <typename T>
+T UnalignedRead(T* value) {
+    T v;
+    memcpy(&v, value, sizeof(T));
+    return v;
+}
+
+///////////////////////////////////////////////////////////////////////////////
 // Error handling support.
 void CheckLLVMErrorCode(const std::error_code &ec);
 

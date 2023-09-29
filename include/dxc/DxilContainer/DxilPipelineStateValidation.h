@@ -13,6 +13,7 @@
 #define __DXIL_PIPELINE_STATE_VALIDATION__H__
 
 #include "dxc/WinAdapter.h"
+#include "dxc/Support/Global.h"
 #include <cstring>
 #include <stdint.h>
 
@@ -778,7 +779,9 @@ DxilPipelineStateValidation::CheckedReaderWriter::MapValue(_T *pValue,
   PSV_RETB(MapPtr(&pPtr, sizeof(_T)));
   switch (Mode) {
   case RWMode::Read:
-    *pValue = *pPtr;
+    //memcpy(pValue, pPtr, sizeof(_T));
+    *pValue = UnalignedRead(pPtr);
+    // *pValue = *pPtr;
     break;
   case RWMode::CalcSize:
     *pValue = init;

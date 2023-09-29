@@ -46,6 +46,14 @@ using namespace hlsl::DXIL;
 namespace {
 // Disassemble helper functions.
 
+template <typename T>
+T unaligned_read(T& v) {
+  T result{};
+  memcpy((void*)&result, &v, sizeof(T));
+  return result;
+}
+
+
 template <typename T> const T *ByteOffset(LPCVOID p, uint32_t byteOffset) {
   return reinterpret_cast<const T *>((const uint8_t *)p + byteOffset);
 }
@@ -87,7 +95,7 @@ void PrintSignature(LPCSTR pName, const DxilProgramSignature *pSignature,
       OS << left_justify(pSemanticName, 20);
     }
 
-    OS << ' ' << format("%5u", pSig->SemanticIndex);
+    OS << ' ' << format("%5u", unaligned_read(pSig->SemanticIndex));
 
     char Mask[4];
     memset(Mask, ' ', sizeof(Mask));
